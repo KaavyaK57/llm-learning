@@ -2,6 +2,7 @@ import boto3
 import pandas as pd
 from io import StringIO
 import json
+from collections import defaultdict
 # Initialize AWS Athena client
 region='us-east-1'
 athena_client = boto3.client('athena', region_name=region)
@@ -99,6 +100,10 @@ for table in tables:
             execution_id,status = execute_query(query)
             table_col_list=get_query_results(execution_id)
 
+table_col_dict = defaultdict(list)
+
+for i in range(1,len(table_col_list)):
+    table_col_dict[table_col_list[i][0]].append(table_col_list[i][1])
 #print(query)
 #execution_id = execute_query(query)
 #results=get_query_results(execution_id)
